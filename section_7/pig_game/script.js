@@ -1,9 +1,9 @@
 'use strict';
 
 // Selecting elements
-const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
+const btnNew = document.querySelector('.btn--new');
 
 const diceElement = document.querySelector('.dice');
 
@@ -22,29 +22,62 @@ scoreElement1.textContent = 0;
 
 let activePlayer = 0;
 let currentScore = 0;
+let playing = true;
 const scores = [0, 0];
+
+const switchPlayer = () => {
+  document.querySelector(`#current--${activePlayer}`).textContent = 0;
+  activePlayer = activePlayer === 1 ? 0 : 1;
+  currentScore = 0;
+  playerElement0.classList.toggle('player--active');
+  playerElement1.classList.toggle('player--active');
+};
 
 // Dice rolling functionality
 btnRoll.addEventListener('click', () => {
-  // Random dice roll
-  const dice = Math.trunc(6 * Math.random()) + 1;
+  if (playing) {
+    // Random dice roll
+    const dice = Math.trunc(6 * Math.random()) + 1;
 
-  // Display dice
-  diceElement.classList.remove('hidden');
-  diceElement.src = `dice-${dice}.png`;
+    // Display dice
+    diceElement.classList.remove('hidden');
+    diceElement.src = `dice-${dice}.png`;
 
-  // Check for rolled 1
-  if (dice !== 1) {
-    // Add dice to current score
-    currentScore += dice;
-    document.querySelector(`#current--${activePlayer}`).textContent =
-      currentScore;
-  } else {
-    // Switch to next player
-    document.querySelector(`#current--${activePlayer}`).textContent = 0;
-    activePlayer = activePlayer === 1 ? 0 : 1;
-    currentScore = 0;
-    playerElement0.classList.toggle('player--active');
-    playerElement1.classList.toggle('player--active');
+    // Check for rolled 1
+    if (dice !== 1) {
+      // Add dice to current score
+      currentScore += dice;
+      document.querySelector(`#current--${activePlayer}`).textContent =
+        currentScore;
+    } else {
+      // Switch to next player
+      switchPlayer();
+    }
+  }
+});
+
+btnHold.addEventListener('click', () => {
+  if (playing) {
+    // Add current score to active player's score
+    scores[activePlayer] += currentScore;
+    document.querySelector(`#score--${activePlayer}`).textContent =
+      scores[activePlayer];
+
+    // Check if player's score >= 100
+    // if (scores[activePlayer] >= 100) { // TODO Uncomment after testing
+    if (scores[activePlayer] >= 20) {
+      // Finish the game
+      playing = false;
+      diceElement.classList.add('hidden');
+      document
+        .querySelector(`.player--${activePlayer}`)
+        .classList.add('player--winner');
+      document
+        .querySelector(`.player--${activePlayer}`)
+        .classList.remove('player--active');
+    } else {
+      // Switch to next player
+      switchPlayer();
+    }
   }
 });
