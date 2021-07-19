@@ -77,3 +77,28 @@ const displayMovements = (movements) => {
 };
 
 displayMovements(account1.movements);
+
+const currencies = new Map([
+  ['USD', 'United States dollar'],
+  ['EUR', 'Euro'],
+  ['GBP', 'Pound sterling'],
+]);
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+const eurToUsd = 1.1;
+const movementsUSD = movements.map((movement) => eurToUsd * movement);
+
+const createUsernames = function (accounts) {
+  accounts.forEach(function (account) {
+    account.username = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map((name) => name[0])
+      .join('');
+  });
+};
+createUsernames(accounts);
+
+const deposits = movements.filter((movement) => movement > 0);
+const withdrawals = movements.filter((movement) => movement < 0);
