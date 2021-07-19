@@ -1,9 +1,5 @@
 const createPromptMessage = function () {
-  const partsPromptMessage = [
-    this.question,
-    ...this.options,
-    '(Write option number)',
-  ];
+  const partsPromptMessage = [this.question, ...this.options, '(Write option number)'];
   return partsPromptMessage.join('\n');
 };
 
