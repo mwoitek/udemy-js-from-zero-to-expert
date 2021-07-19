@@ -5,25 +5,43 @@ const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 const btnNew = document.querySelector('.btn--new');
 
-const diceElement = document.querySelector('.dice');
-
 const currentScoreElement0 = document.querySelector('#current--0');
 const currentScoreElement1 = document.querySelector('#current--1');
-const scoreElement0 = document.querySelector('#score--0');
-const scoreElement1 = document.querySelector('#score--1');
+
+const diceElement = document.querySelector('.dice');
 
 const playerElement0 = document.querySelector('.player--0');
 const playerElement1 = document.querySelector('.player--1');
 
-// Starting conditions
-diceElement.classList.add('hidden');
-scoreElement0.textContent = 0;
-scoreElement1.textContent = 0;
+const scoreElement0 = document.querySelector('#score--0');
+const scoreElement1 = document.querySelector('#score--1');
 
-let activePlayer = 0;
-let currentScore = 0;
-let playing = true;
-const scores = [0, 0];
+// Starting conditions
+let activePlayer;
+let currentScore;
+let playing;
+let scores;
+
+const init = () => {
+  playing = true;
+
+  activePlayer = 0;
+  playerElement0.classList.add('player--active');
+  playerElement0.classList.remove('player--winner');
+  playerElement1.classList.remove('player--active', 'player--winner');
+
+  scores = [0, 0];
+  scoreElement0.textContent = 0;
+  scoreElement1.textContent = 0;
+
+  currentScore = 0;
+  currentScoreElement0.textContent = 0;
+  currentScoreElement1.textContent = 0;
+
+  diceElement.classList.add('hidden');
+};
+
+init();
 
 const switchPlayer = () => {
   document.querySelector(`#current--${activePlayer}`).textContent = 0;
@@ -64,8 +82,7 @@ btnHold.addEventListener('click', () => {
       scores[activePlayer];
 
     // Check if player's score >= 100
-    // if (scores[activePlayer] >= 100) { // TODO Uncomment after testing
-    if (scores[activePlayer] >= 20) {
+    if (scores[activePlayer] >= 100) {
       // Finish the game
       playing = false;
       diceElement.classList.add('hidden');
@@ -81,3 +98,5 @@ btnHold.addEventListener('click', () => {
     }
   }
 });
+
+btnNew.addEventListener('click', init);
