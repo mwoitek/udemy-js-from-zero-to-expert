@@ -1,4 +1,4 @@
-let country = "Brazil";
+let country = 'Brazil';
 let population = 214734970;
 
 let isIsland = false;

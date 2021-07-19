@@ -1,6 +1,6 @@
-const continent = "South America";
-const country = "Brazil";
-const language = "Portuguese";
+const continent = 'South America';
+const country = 'Brazil';
+const language = 'Portuguese';
 let population = 214734970;
 
 // If your country split in half, and each half would contain half the
@@ -29,11 +29,11 @@ console.log(lessPeople);
 // which contains a string with this format: 'Portugal is in Europe, and its 11
 // million people speak Portuguese'.
 const description =
-    country +
-    " is in " +
-    continent +
-    ", and its " +
-    population +
-    " people speak " +
-    language;
+  country +
+  ' is in ' +
+  continent +
+  ', and its ' +
+  population +
+  ' people speak ' +
+  language;
 console.log(description);

@@ -1,7 +1,7 @@
 const worldPopulation = 7900;
 
 function percentageOfWorld1(population) {
-    return (100 * population) / worldPopulation;
+  return (100 * population) / worldPopulation;
 }
 
 let percentageChina = percentageOfWorld1(1441);
@@ -13,7 +13,7 @@ console.log(percentageFinland);
 console.log(percentagePortugal);
 
 const percentageOfWorld2 = function (population) {
-    return (100 * population) / worldPopulation;
+  return (100 * population) / worldPopulation;
 };
 
 percentageChina = percentageOfWorld2(1441);
