@@ -54,9 +54,7 @@ const averageOdd = calcAverage(Object.values(game.odds));
 console.log(averageOdd);
 
 for (const propertyName of Object.keys(game.odds)) {
-  const oddDescription = !game[propertyName]
-    ? 'draw'
-    : `victory ${game[propertyName]}`;
+  const oddDescription = !game[propertyName] ? 'draw' : `victory ${game[propertyName]}`;
   console.log(`Odd of ${oddDescription}: ${game.odds[propertyName]}`);
 }
 
