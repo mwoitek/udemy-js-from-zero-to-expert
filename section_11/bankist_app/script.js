@@ -58,3 +58,22 @@ const inputLoginPin = document.querySelector('.login__input--pin');
 const inputLoginUsername = document.querySelector('.login__input--user');
 const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputTransferTo = document.querySelector('.form__input--to');
+
+const displayMovements = (movements) => {
+  containerMovements.innerHTML = '';
+
+  movements.forEach((movement, i) => {
+    const type = movement > 0 ? 'deposit' : 'withdrawal';
+
+    const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
+        <div class="movements__value">${movement}</div>
+      </div>
+    `;
+
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+};
+
+displayMovements(account1.movements);
