@@ -76,38 +76,32 @@ const displayMovements = (movements) => {
   });
 };
 
-displayMovements(account1.movements);
-
 const calcDisplayBalance = (movements) => {
   const balance = movements.reduce((accumulator, movement) => accumulator + movement, 0);
   labelBalance.textContent = `${balance}€`;
 };
 
-calcDisplayBalance(account1.movements);
-
-const calcDisplaySummary = (movements) => {
-  const incomes = movements
+const calcDisplaySummary = (account) => {
+  const incomes = account.movements
     .filter((movement) => movement > 0)
     .reduce((accumulator, movement) => accumulator + movement, 0);
   labelSumIn.textContent = `${incomes}€`;
 
-  const out = movements
+  const out = account.movements
     .filter((movement) => movement < 0)
     .reduce((accumulator, movement) => accumulator + movement, 0);
   labelSumOut.textContent = `${Math.abs(out)}€`;
 
-  const interest = movements
+  const interest = account.movements
     .filter((movement) => movement > 0)
-    .map((deposit) => (1.2 * deposit) / 100)
+    .map((deposit) => (account.interestRate * deposit) / 100)
     .filter((int) => int >= 1)
     .reduce((accumulator, int) => accumulator + int, 0);
   labelSumInterest.textContent = `${interest}€`;
 };
 
-calcDisplaySummary(account1.movements);
-
-const createUsernames = function (accounts) {
-  accounts.forEach(function (account) {
+const createUsernames = (accounts) => {
+  accounts.forEach((account) => {
     account.username = account.owner
       .toLowerCase()
       .split(' ')
@@ -118,17 +112,38 @@ const createUsernames = function (accounts) {
 
 createUsernames(accounts);
 
-//
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
+// Event handler
+let currentAccount;
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+btnLogin.addEventListener('click', (e) => {
+  // Prevent form from submitting
+  e.preventDefault();
+
+  currentAccount = accounts.find(
+    (account) => account.username === inputLoginUsername.value
+  );
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // Display UI and message
+    const firstName = currentAccount.owner.split(' ')[0];
+    labelWelcome.textContent = `Welcome back, ${firstName}`;
+    containerApp.style.opacity = 100;
+
+    // Clear input fields
+    inputLoginUsername.value = '';
+    inputLoginPin.value = '';
+    inputLoginPin.blur();
+
+    // Display movements
+    displayMovements(currentAccount.movements);
+
+    // Display balance
+    calcDisplayBalance(currentAccount.movements);
+
+    // Display summary
+    calcDisplaySummary(currentAccount);
+  }
+});
 
 // const eurToUsd = 1.1;
 // const movementsUSD = movements.map((movement) => eurToUsd * movement);
-
-// const deposits = movements.filter((movement) => movement > 0);
-// const withdrawals = movements.filter((movement) => movement < 0);
