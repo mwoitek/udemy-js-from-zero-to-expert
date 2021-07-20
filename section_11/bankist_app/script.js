@@ -68,7 +68,7 @@ const displayMovements = (movements) => {
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-        <div class="movements__value">${movement}</div>
+        <div class="movements__value">${movement}€</div>
       </div>
     `;
 
@@ -78,16 +78,33 @@ const displayMovements = (movements) => {
 
 displayMovements(account1.movements);
 
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
+const calcDisplayBalance = (movements) => {
+  const balance = movements.reduce((accumulator, movement) => accumulator + movement, 0);
+  labelBalance.textContent = `${balance}€`;
+};
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+calcDisplayBalance(account1.movements);
 
-const eurToUsd = 1.1;
-const movementsUSD = movements.map((movement) => eurToUsd * movement);
+const calcDisplaySummary = (movements) => {
+  const incomes = movements
+    .filter((movement) => movement > 0)
+    .reduce((accumulator, movement) => accumulator + movement, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const out = movements
+    .filter((movement) => movement < 0)
+    .reduce((accumulator, movement) => accumulator + movement, 0);
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  const interest = movements
+    .filter((movement) => movement > 0)
+    .map((deposit) => (1.2 * deposit) / 100)
+    .filter((int) => int >= 1)
+    .reduce((accumulator, int) => accumulator + int, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+
+calcDisplaySummary(account1.movements);
 
 const createUsernames = function (accounts) {
   accounts.forEach(function (account) {
@@ -98,7 +115,20 @@ const createUsernames = function (accounts) {
       .join('');
   });
 };
+
 createUsernames(accounts);
 
-const deposits = movements.filter((movement) => movement > 0);
-const withdrawals = movements.filter((movement) => movement < 0);
+//
+const currencies = new Map([
+  ['USD', 'United States dollar'],
+  ['EUR', 'Euro'],
+  ['GBP', 'Pound sterling'],
+]);
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// const eurToUsd = 1.1;
+// const movementsUSD = movements.map((movement) => eurToUsd * movement);
+
+// const deposits = movements.filter((movement) => movement > 0);
+// const withdrawals = movements.filter((movement) => movement < 0);
