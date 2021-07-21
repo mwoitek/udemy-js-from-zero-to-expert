@@ -76,9 +76,12 @@ const displayMovements = (movements) => {
   });
 };
 
-const calcDisplayBalance = (movements) => {
-  const balance = movements.reduce((accumulator, movement) => accumulator + movement, 0);
-  labelBalance.textContent = `${balance}€`;
+const calcDisplayBalance = (account) => {
+  account.balance = account.movements.reduce(
+    (accumulator, movement) => accumulator + movement,
+    0
+  );
+  labelBalance.textContent = `${account.balance}€`;
 };
 
 const calcDisplaySummary = (account) => {
@@ -112,6 +115,17 @@ const createUsernames = (accounts) => {
 
 createUsernames(accounts);
 
+const updateUI = (account) => {
+  // Display movements
+  displayMovements(account.movements);
+
+  // Display balance
+  calcDisplayBalance(account);
+
+  // Display summary
+  calcDisplaySummary(account);
+};
+
 // Event handler
 let currentAccount;
 
@@ -134,16 +148,35 @@ btnLogin.addEventListener('click', (e) => {
     inputLoginPin.value = '';
     inputLoginPin.blur();
 
-    // Display movements
-    displayMovements(currentAccount.movements);
-
-    // Display balance
-    calcDisplayBalance(currentAccount.movements);
-
-    // Display summary
-    calcDisplaySummary(currentAccount);
+    // Update UI
+    updateUI(currentAccount);
   }
 });
 
-// const eurToUsd = 1.1;
-// const movementsUSD = movements.map((movement) => eurToUsd * movement);
+btnTransfer.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  const amount = Number(inputTransferAmount.value);
+  const receiverAccount = accounts.find(
+    (account) => account.username === inputTransferTo.value
+  );
+
+  if (
+    amount > 0 &&
+    currentAccount.balance >= amount &&
+    receiverAccount &&
+    currentAccount.username !== receiverAccount.username
+  ) {
+    // Doing the transfer
+    currentAccount.movements.push(-amount);
+    receiverAccount.movements.push(amount);
+
+    // Clear input fields
+    inputTransferTo.value = '';
+    inputTransferAmount.value = '';
+    inputTransferAmount.blur();
+
+    // Update UI
+    updateUI(currentAccount);
+  }
+});
