@@ -146,6 +146,7 @@ btnLogin.addEventListener('click', (e) => {
     // Clear input fields
     inputLoginUsername.value = '';
     inputLoginPin.value = '';
+    inputLoginUsername.blur();
     inputLoginPin.blur();
 
     // Update UI
@@ -174,9 +175,34 @@ btnTransfer.addEventListener('click', (e) => {
     // Clear input fields
     inputTransferTo.value = '';
     inputTransferAmount.value = '';
+    inputTransferTo.blur();
     inputTransferAmount.blur();
 
     // Update UI
     updateUI(currentAccount);
+  }
+});
+
+btnClose.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  if (
+    currentAccount.username === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    // Delete account
+    const index = accounts.findIndex(
+      (account) => account.username === currentAccount.username
+    );
+    accounts.splice(index, 1);
+
+    // Clear input fields
+    inputCloseUsername.value = '';
+    inputClosePin.value = '';
+    inputCloseUsername.blur();
+    inputClosePin.blur();
+
+    // Hide UI
+    containerApp.style.opacity = 0;
   }
 });
