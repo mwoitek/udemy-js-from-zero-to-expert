@@ -6,19 +6,15 @@ const dogs = [
 ];
 
 dogs.forEach((dog) => {
-  dog.recommendedFood = 28 * dog.weight ** 0.75;
+  dog.recommendedFood = Math.trunc(28 * dog.weight ** 0.75);
 });
 
-const computeLowerBound = (dog) => 0.9 * dog.recommendedFood;
-
-const computeUpperBound = (dog) => 1.1 * dog.recommendedFood;
-
-const eatTooLittle = (dog) => dog.curFood < computeLowerBound(dog);
+const eatTooLittle = (dog) => dog.curFood < dog.recommendedFood;
 
 const eatOkAmount = (dog) =>
-  dog.curFood >= computeLowerBound(dog) && dog.curFood <= computeUpperBound(dog);
+  dog.curFood >= 0.9 * dog.recommendedFood && dog.curFood <= 1.1 * dog.recommendedFood;
 
-const eatTooMuch = (dog) => dog.curFood > computeUpperBound(dog);
+const eatTooMuch = (dog) => dog.curFood > dog.recommendedFood;
 
 const findDogByOwner = (owner) => dogs.find((dog) => dog.owners.includes(owner));
 
@@ -56,6 +52,7 @@ console.log(dogs.some(eatOkAmount));
 const dogsOkAmount = dogs.filter(eatOkAmount);
 console.log(dogsOkAmount);
 
-const dogsCopy = dogs.slice();
-dogsCopy.sort((dog1, dog2) => dog1.recommendedFood - dog2.recommendedFood);
+const dogsCopy = dogs
+  .slice()
+  .sort((dog1, dog2) => dog1.recommendedFood - dog2.recommendedFood);
 console.log(dogsCopy);
