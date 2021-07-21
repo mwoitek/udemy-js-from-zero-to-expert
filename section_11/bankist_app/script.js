@@ -59,10 +59,11 @@ const inputLoginUsername = document.querySelector('.login__input--user');
 const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputTransferTo = document.querySelector('.form__input--to');
 
-const displayMovements = (movements) => {
+const displayMovements = (movements, sort = false) => {
   containerMovements.innerHTML = '';
 
-  movements.forEach((movement, i) => {
+  const newMovements = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  newMovements.forEach((movement, i) => {
     const type = movement > 0 ? 'deposit' : 'withdrawal';
 
     const html = `
@@ -225,4 +226,12 @@ btnClose.addEventListener('click', (e) => {
     // Hide UI
     containerApp.style.opacity = 0;
   }
+});
+
+let sorted = false;
+btnSort.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
 });
