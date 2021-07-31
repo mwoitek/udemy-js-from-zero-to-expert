@@ -67,4 +67,20 @@ const displayCountryData2 = function (country) {
     .then((data) => renderCountry(data[0]));
 };
 
-displayCountryData2('Brazil');
+// displayCountryData2('Brazil');
+
+const displayCountryAndNeighbor2 = function (country) {
+  fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+    .then((response) => response.json())
+    .then((data) => {
+      renderCountry(data[0]);
+
+      if (data[0].borders.length === 0) return;
+      const neighbor = data[0].borders[0];
+      return fetch(`https://restcountries.eu/rest/v2/alpha/${neighbor}`);
+    })
+    .then((response) => response.json())
+    .then((data) => renderCountry(data, 'neighbour'));
+};
+
+displayCountryAndNeighbor2('Brazil');
