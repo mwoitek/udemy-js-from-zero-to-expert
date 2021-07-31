@@ -21,6 +21,8 @@ const renderCountry = function (countryData, className = '') {
   countriesContainer.style.opacity = 1;
 };
 
+// Solution using XMLHttpRequest
+
 const displayCountryData = function (country) {
   const request = new XMLHttpRequest();
   request.open('GET', `https://restcountries.eu/rest/v2/name/${country}`);
@@ -55,4 +57,14 @@ const displayCountryAndNeighbor = function (country) {
 };
 
 // displayCountryAndNeighbor('Brazil');
-displayCountryAndNeighbor('Norway');
+// displayCountryAndNeighbor('Norway');
+
+// Solution using fetch
+
+const displayCountryData2 = function (country) {
+  fetch(`https://restcountries.eu/rest/v2/name/${country}`)
+    .then((response) => response.json())
+    .then((data) => renderCountry(data[0]));
+};
+
+displayCountryData2('Brazil');
