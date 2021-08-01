@@ -100,5 +100,53 @@ const displayCountryAndNeighbor2 = function (country) {
 };
 
 // btn.addEventListener('click', () => displayCountryAndNeighbor2('Australia'));
-btn.addEventListener('click', () => displayCountryAndNeighbor2('Italy'));
+// btn.addEventListener('click', () => displayCountryAndNeighbor2('Italy'));
 // btn.addEventListener('click', () => displayCountryAndNeighbor2('xyz'));
+
+// Solution to Part 2 of Challenge 1
+
+const whereAmI = function (lat, lng) {
+  fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error?.description) throw new Error('Invalid coordinates');
+      if (data.error?.message) throw new Error('Too many requests per second');
+      return fetch(`https://restcountries.eu/rest/v2/name/${data.country}`);
+    })
+    .then((response) => {
+      if (!response.ok) throw new Error(`Country not found (${response.status})`);
+      return response.json();
+    })
+    .then((data) => renderCountry(data[0]))
+    .catch((error) => {
+      console.error(error);
+      renderError(`Something went wrong: ${error.message}.`);
+    })
+    .finally(() => {
+      countriesContainer.style.opacity = 1;
+    });
+};
+
+// Germany
+btn.addEventListener('click', () => whereAmI(52.508, 13.381));
+
+// British Indian Ocean Territory
+// btn.addEventListener('click', () => whereAmI(19.037, 72.873));
+
+// South Africa
+// btn.addEventListener('click', () => whereAmI(-33.933, 18.474));
+
+// Generating errors
+
+// btn.addEventListener('click', () => whereAmI('', 18.474));
+
+// btn.addEventListener('click', () => whereAmI(999, 18.474));
+
+// btn.addEventListener('click', () => {
+//   whereAmI(52.508, 13.381);
+//   whereAmI(52.508, 13.381);
+//   whereAmI(52.508, 13.381);
+//   whereAmI(52.508, 13.381);
+//   whereAmI(52.508, 13.381);
+//   whereAmI(52.508, 13.381);
+// });
