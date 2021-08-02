@@ -103,8 +103,17 @@ const displayCountryAndNeighbor2 = function (country) {
 // btn.addEventListener('click', () => displayCountryAndNeighbor2('Italy'));
 // btn.addEventListener('click', () => displayCountryAndNeighbor2('xyz'));
 
-const whereAmI = function (lat, lng) {
-  fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
+const getPosition = () =>
+  new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject)
+  );
+
+const whereAmI = function () {
+  getPosition()
+    .then((position) => {
+      const { latitude: lat, longitude: lng } = position.coords;
+      return fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+    })
     .then((response) => {
       if (!response.ok) throw new Error(`Problem with geocoding (${response.status})`);
       return response.json();
@@ -124,6 +133,4 @@ const whereAmI = function (lat, lng) {
     });
 };
 
-btn.addEventListener('click', () => whereAmI(52.508, 13.381));
-// btn.addEventListener('click', () => whereAmI(19.037, 72.873));
-// btn.addEventListener('click', () => whereAmI(-33.933, 18.474));
+btn.addEventListener('click', () => whereAmI());
