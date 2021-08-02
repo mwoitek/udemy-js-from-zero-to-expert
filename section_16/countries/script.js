@@ -134,19 +134,28 @@ const whereAmI = function () {
 };
 
 const whereAmI2 = async function () {
-  const position = await getPosition();
-  const { latitude: lat, longitude: lng } = position.coords;
+  try {
+    const position = await getPosition();
+    const { latitude: lat, longitude: lng } = position.coords;
 
-  const responseGeocode = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-  const dataGeocode = await responseGeocode.json();
+    const responseGeocode = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+    if (!responseGeocode.ok)
+      throw new Error(`Problem with geocoding (${responseGeocode.status})`);
+    const dataGeocode = await responseGeocode.json();
 
-  const response = await fetch(
-    `https://restcountries.eu/rest/v2/name/${dataGeocode.country}`
-  );
-  const data = await response.json();
+    const response = await fetch(
+      `https://restcountries.eu/rest/v2/name/${dataGeocode.country}`
+    );
+    if (!response.ok) throw new Error(`Country not found (${response.status})`);
+    const data = await response.json();
 
-  renderCountry(data[0]);
-  countriesContainer.style.opacity = 1;
+    renderCountry(data[0]);
+  } catch (error) {
+    console.error(error);
+    renderError(`Something went wrong: ${error.message}.`);
+  } finally {
+    countriesContainer.style.opacity = 1;
+  }
 };
 
 btn.addEventListener('click', () => whereAmI2());
