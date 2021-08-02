@@ -11,7 +11,7 @@ const renderCountry = function (countryData, className = '') {
       <div class="country__data">
         <h3 class="country__name">${countryData.name}</h3>
         <h4 class="country__region">${countryData.region}</h4>
-        <p class="country__row"><b>Population:</b> ${countryPopulation} people</p>
+        <p class="country__row"><b>Population:</b> ${countryPopulation} million people</p>
         <p class="country__row"><b>Language:</b> ${countryData.languages[0].name}</p>
         <p class="country__row"><b>Currency:</b> ${countryData.currencies[0].name}</p>
       </div>
@@ -133,4 +133,20 @@ const whereAmI = function () {
     });
 };
 
-btn.addEventListener('click', () => whereAmI());
+const whereAmI2 = async function () {
+  const position = await getPosition();
+  const { latitude: lat, longitude: lng } = position.coords;
+
+  const responseGeocode = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+  const dataGeocode = await responseGeocode.json();
+
+  const response = await fetch(
+    `https://restcountries.eu/rest/v2/name/${dataGeocode.country}`
+  );
+  const data = await response.json();
+
+  renderCountry(data[0]);
+  countriesContainer.style.opacity = 1;
+};
+
+btn.addEventListener('click', () => whereAmI2());
