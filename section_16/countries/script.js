@@ -222,4 +222,42 @@ const get3Capitals2 = async function (country1, country2, country3) {
   }
 };
 
-get3Capitals2('China', 'Finland', 'Russia');
+// get3Capitals2('China', 'Finland', 'Russia');
+
+// (async function () {
+//   const data = await Promise.race([
+//     getJSON('https://restcountries.eu/rest/v2/name/china', 'Country not found'),
+//     getJSON('https://restcountries.eu/rest/v2/name/finland', 'Country not found'),
+//     getJSON('https://restcountries.eu/rest/v2/name/russia', 'Country not found'),
+//   ]);
+//   console.log(data[0].name);
+// })();
+
+const timeout = function (seconds) {
+  return new Promise(function (_, reject) {
+    setTimeout(function () {
+      reject(new Error('Request took too long'));
+    }, seconds * 10 ** 3);
+  });
+};
+
+// Promise.race([
+//   getJSON('https://restcountries.eu/rest/v2/name/china', 'Country not found'),
+//   timeout(1),
+// ])
+//   .then((data) => console.log(data[0].name))
+//   .catch((error) => console.error(error));
+
+// Promise.allSettled([
+//   Promise.resolve('Success'),
+//   Promise.reject('Error'),
+//   Promise.resolve('Another success'),
+// ]).then((response) => console.log(response));
+
+// Promise.any([
+//   Promise.resolve('Success'),
+//   Promise.reject('Error'),
+//   Promise.resolve('Another success'),
+// ])
+//   .then((response) => console.log(response))
+//   .catch((error) => console.error(error));
