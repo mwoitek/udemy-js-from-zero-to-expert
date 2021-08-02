@@ -159,3 +159,29 @@ const whereAmI2 = async function () {
 };
 
 btn.addEventListener('click', () => whereAmI2());
+
+const whereAmI3 = async function () {
+  try {
+    const position = await getPosition();
+    const { latitude: lat, longitude: lng } = position.coords;
+    const responseGeocode = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+    if (!responseGeocode.ok)
+      throw new Error(`Problem with geocoding (${responseGeocode.status})`);
+    const dataGeocode = await responseGeocode.json();
+    return `You are in ${dataGeocode.city}, ${dataGeocode.country}`;
+  } catch (error) {
+    throw error;
+  }
+};
+
+console.log('1: Will get location');
+(async function () {
+  try {
+    const location = await whereAmI3();
+    console.log(`2: ${location}`);
+  } catch (error) {
+    console.error(`2: ${error.message}`);
+  } finally {
+    console.log('3: Finished getting location');
+  }
+})();
