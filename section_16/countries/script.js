@@ -174,14 +174,52 @@ const whereAmI3 = async function () {
   }
 };
 
-console.log('1: Will get location');
-(async function () {
+// console.log('1: Will get location');
+// (async function () {
+//   try {
+//     const location = await whereAmI3();
+//     console.log(`2: ${location}`);
+//   } catch (error) {
+//     console.error(`2: ${error.message}`);
+//   } finally {
+//     console.log('3: Finished getting location');
+//   }
+// })();
+
+const get3Capitals = async function (country1, country2, country3) {
   try {
-    const location = await whereAmI3();
-    console.log(`2: ${location}`);
+    const [data1] = await getJSON(
+      `https://restcountries.eu/rest/v2/name/${country1}`,
+      'Country not found'
+    );
+    const [data2] = await getJSON(
+      `https://restcountries.eu/rest/v2/name/${country2}`,
+      'Country not found'
+    );
+    const [data3] = await getJSON(
+      `https://restcountries.eu/rest/v2/name/${country3}`,
+      'Country not found'
+    );
+    console.log([data1.capital, data2.capital, data3.capital]);
   } catch (error) {
-    console.error(`2: ${error.message}`);
-  } finally {
-    console.log('3: Finished getting location');
+    console.error(error);
   }
-})();
+};
+
+// get3Capitals('China', 'Finland', 'Russia');
+
+const get3Capitals2 = async function (country1, country2, country3) {
+  try {
+    const data = await Promise.all([
+      getJSON(`https://restcountries.eu/rest/v2/name/${country1}`, 'Country not found'),
+      getJSON(`https://restcountries.eu/rest/v2/name/${country2}`, 'Country not found'),
+      getJSON(`https://restcountries.eu/rest/v2/name/${country3}`, 'Country not found'),
+    ]);
+    const capitals = data.map((countryData) => countryData[0].capital);
+    console.log(capitals);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+get3Capitals2('China', 'Finland', 'Russia');
