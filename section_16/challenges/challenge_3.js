@@ -28,8 +28,14 @@ const loadNPause = async function (imgPath1, imgPath2) {
 // loadNPause('img/img-1.jpg', 'img/img-2.jpg');
 
 const loadAll = async function (imgArr) {
-  const imgs = await Promise.all(imgArr.map((imgPath) => createImage(imgPath)));
-  imgs.forEach((img) => img.classList.add('parallel'));
+  try {
+    const imgs = await Promise.all(
+      imgArr.map(async (imgPath) => await createImage(imgPath))
+    );
+    imgs.forEach((img) => img.classList.add('parallel'));
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 loadAll(['img/img-1.jpg', 'img/img-2.jpg', 'img/img-3.jpg']);
