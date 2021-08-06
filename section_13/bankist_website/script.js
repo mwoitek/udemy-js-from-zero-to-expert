@@ -45,3 +45,21 @@ header.append(message);
 document
   .querySelector('.btn--close-cookie')
   .addEventListener('click', () => message.remove());
+
+// Smooth scrolling
+
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', () => {
+  // Modern implementation
+  section1.scrollIntoView({ behavior: 'smooth' });
+
+  // Old-school implementation
+  // const section1Coords = section1.getBoundingClientRect();
+  // window.scrollTo({
+  //   left: section1Coords.left + window.pageXOffset,
+  //   top: section1Coords.top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+});
