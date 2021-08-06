@@ -5,6 +5,7 @@ const btnScrollTo = document.querySelector('.btn--scroll-to');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 // const header = document.querySelector('.header');
 const modal = document.querySelector('.modal');
+const nav = document.querySelector('.nav');
 const overlay = document.querySelector('.overlay');
 const section1 = document.querySelector('#section--1');
 const tabs = document.querySelectorAll('.operations__tab');
@@ -89,3 +90,21 @@ tabsContainer.addEventListener('click', (e) => {
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+// Menu fade animation
+
+const handleHover = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const logo = link.closest('.nav').querySelector('img');
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+
+    logo.style.opacity = this;
+    siblings.forEach((el) => {
+      if (el !== link) el.style.opacity = this;
+    });
+  }
+};
+
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+nav.addEventListener('mouseout', handleHover.bind(1));
