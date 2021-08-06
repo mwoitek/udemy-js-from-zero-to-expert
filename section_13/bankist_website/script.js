@@ -7,6 +7,9 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
 
 // Modal window
 
@@ -70,4 +73,19 @@ document.querySelector('.nav__links').addEventListener('click', (e) => {
     const id = e.target.getAttribute('href');
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
+});
+
+// Tabbed component
+
+tabsContainer.addEventListener('click', (e) => {
+  const clicked = e.target.closest('.operations__tab');
+  if (!clicked) return;
+
+  tabs.forEach((tab) => tab.classList.remove('operations__tab--active'));
+  tabsContent.forEach((tc) => tc.classList.remove('operations__content--active'));
+
+  clicked.classList.add('operations__tab--active');
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
 });
