@@ -1,5 +1,6 @@
 'use strict';
 
+const allSections = document.querySelectorAll('.section');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
@@ -137,3 +138,22 @@ const headerObserver = new IntersectionObserver(stickyNav, {
   rootMargin: `-${navHeight}px`,
 });
 headerObserver.observe(header);
+
+// Reveal sections
+
+const revealSection = (entries, observer) => {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+allSections.forEach((section) => {
+  section.classList.add('section--hidden');
+  sectionObserver.observe(section);
+});
