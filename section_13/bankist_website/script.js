@@ -2,6 +2,8 @@
 
 const allSections = document.querySelectorAll('.section');
 const btnCloseModal = document.querySelector('.btn--close-modal');
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const header = document.querySelector('.header');
@@ -10,6 +12,7 @@ const modal = document.querySelector('.modal');
 const nav = document.querySelector('.nav');
 const overlay = document.querySelector('.overlay');
 const section1 = document.querySelector('#section--1');
+const slides = document.querySelectorAll('.slide');
 const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
@@ -155,7 +158,7 @@ const sectionObserver = new IntersectionObserver(revealSection, {
   threshold: 0.15,
 });
 allSections.forEach((section) => {
-  section.classList.add('section--hidden');
+  // section.classList.add('section--hidden');
   sectionObserver.observe(section);
 });
 
@@ -176,3 +179,41 @@ const imgObserver = new IntersectionObserver(loadImg, {
   rootMargin: '200px',
 });
 imgTargets.forEach((img) => imgObserver.observe(img));
+
+// Slider component
+
+const maxSlide = slides.length - 1;
+let currentSlide = 0;
+
+const goToSlide = (slide) =>
+  slides.forEach((s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`));
+
+goToSlide(currentSlide);
+
+// Previous slide
+
+const previousSlide = () => {
+  if (currentSlide === 0) {
+    currentSlide = maxSlide;
+  } else {
+    currentSlide--;
+  }
+
+  goToSlide(currentSlide);
+};
+
+btnLeft.addEventListener('click', previousSlide);
+
+// Next slide
+
+const nextSlide = () => {
+  if (currentSlide === maxSlide) {
+    currentSlide = 0;
+  } else {
+    currentSlide++;
+  }
+
+  goToSlide(currentSlide);
+};
+
+btnRight.addEventListener('click', nextSlide);
