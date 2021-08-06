@@ -5,6 +5,7 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const header = document.querySelector('.header');
+const imgTargets = document.querySelectorAll('img[data-src]');
 const modal = document.querySelector('.modal');
 const nav = document.querySelector('.nav');
 const overlay = document.querySelector('.overlay');
@@ -157,3 +158,21 @@ allSections.forEach((section) => {
   section.classList.add('section--hidden');
   sectionObserver.observe(section);
 });
+
+// Lazy loading images
+
+const loadImg = (entries, observer) => {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+
+  entry.target.src = entry.target.dataset.src;
+  entry.target.addEventListener('load', () => entry.target.classList.remove('lazy-img'));
+  observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  rootMargin: '200px',
+});
+imgTargets.forEach((img) => imgObserver.observe(img));
