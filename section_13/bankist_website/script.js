@@ -1,11 +1,14 @@
 'use strict';
 
-// Modal window
-
+const btnCloseModal = document.querySelector('.btn--close-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+// const header = document.querySelector('.header');
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
-const btnCloseModal = document.querySelector('.btn--close-modal');
-const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const section1 = document.querySelector('#section--1');
+
+// Modal window
 
 const openModal = function (e) {
   e.preventDefault();
@@ -19,7 +22,6 @@ const closeModal = function () {
 };
 
 btnsOpenModal.forEach((btn) => btn.addEventListener('click', openModal));
-
 btnCloseModal.addEventListener('click', closeModal);
 overlay.addEventListener('click', closeModal);
 
@@ -32,24 +34,20 @@ document.addEventListener('keydown', function (e) {
 // Cookie message
 
 // Create message
-const message = document.createElement('div');
-message.classList.add('cookie-message');
-message.innerHTML = 'We use cookies for improved functionality and analytics. ';
-message.innerHTML += '<button class="btn btn--close-cookie">Got it!</button>';
+// const message = document.createElement('div');
+// message.classList.add('cookie-message');
+// message.innerHTML = 'We use cookies for improved functionality and analytics. ';
+// message.innerHTML += '<button class="btn btn--close-cookie">Got it!</button>';
 
 // Append message to the header
-const header = document.querySelector('.header');
-header.append(message);
+// header.append(message);
 
 // Remove message
-document
-  .querySelector('.btn--close-cookie')
-  .addEventListener('click', () => message.remove());
+// document
+//   .querySelector('.btn--close-cookie')
+//   .addEventListener('click', () => message.remove());
 
 // Smooth scrolling
-
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
 
 btnScrollTo.addEventListener('click', () => {
   // Modern implementation
@@ -62,4 +60,14 @@ btnScrollTo.addEventListener('click', () => {
   //   top: section1Coords.top + window.pageYOffset,
   //   behavior: 'smooth',
   // });
+});
+
+// Page navigation
+
+document.querySelector('.nav__links').addEventListener('click', (e) => {
+  e.preventDefault();
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
 });
